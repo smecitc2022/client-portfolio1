@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokala Surya Akash | International Athlete </title>
+    <!-- Tailwind CSS for a clean, modern, and elegant design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define Colors and Fonts */
+        :root {
+            --color-primary: #1E40AF; /* Technical Blue (Accent) */
+            --color-secondary: #10B981; /* Tennis Green */
+            --color-accent: #0b97f5; /* Gold/Orange (Highlight) */
+            --color-accent: #F59E0B; /* Gold/Orange (Highlight) */
+            --color-dark: #1F2937; /* Dark Gray */
+            --color-light: #F9FAFB; /* Off-White/Light Background */
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        /* NEW: Sporty & Elegant Font Combination with a distinct quote font */
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:ital,wght@1,400&family=Montserrat:wght@400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Lato', sans-serif; /* Lato for readable body text */
+            background-color: white;
+            color: var(--color-dark);
+            scroll-behavior: smooth;
+        }
+
+        /* NEW: Apply Montserrat to all headings for a strong, clean look */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* NEW: Special class for the hero quote */
+        .quote-text {
+            font-family: 'Merriweather', serif;
+        }
+
+
+        /* Hero Section - UPDATED STYLES */
+        .hero-section {
+            /* Use the local background image */
+            background-image: url("images/background image.jpg");
+            background-size: cover;
+            background-attachment: fixed; /* Ensures the background is static during scroll, improving consistency */
+            background-position: center;
+            position: relative;
+            /* Ensures it always takes up the full screen height */
+            height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-overlay {
+            /* NEW: Semi-transparent overlay for better text readability */
+            /* background: rgba(0, 0, 0, 0.5);  */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 1s ease-out 0.2s;
+        }
+        .hero-overlay.loaded {
+            opacity: 1;
+        }
+        
+        /* Navigation */
+        .nav-link {
+            transition: color 0.3s, border-bottom 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--color-accent);
+            border-bottom: 2px solid var(--color-accent);
+        }
+        
+        /* General Card & Hover Effects (Enhanced transition) */
+        .card {
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease-in-out;
+            border-radius: 0.75rem;
+        }
+        .card:hover {
+            transform: translateY(-8px); /* Deeper lift on hover */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Gallery Image Hover Effect (Enhanced transition) */
+        .gallery-image {
+            transition: transform 0.4s ease-in-out, filter 0.3s;
+            /* CRITICAL FIX: Ensures the image container is always a square regardless of image source */
+            height: 0;
+            padding-top: 100%; 
+            position: relative;
+        }
+        .gallery-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .gallery-image:hover img {
+            transform: scale(1.05); /* Slightly larger zoom */
+            filter: brightness(1.1);
+        }
+        /* FIX: To ensure the individual gallery cell is clickable and responsive */
+        .gallery-cell {
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden; /* Important for the hover effect */
+        }
+
+
+        /* --- New: Scroll Animation Classes --- */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- End New Scroll Animation Classes --- */
+
+
+        /* Custom Scroll Bar (For aesthetic appeal) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-light); }
+        ::-webkit-scrollbar-thumb { background: var(--color-secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+        /* Mobile Adjustments for Timeline */
+        @media (max-width: 768px) {
+            .timeline-item {
+                border-left: 2px solid var(--color-secondary);
+                padding-left: 1.5rem;
+            }
+            .timeline-dot {
+                left: 0;
+                transform: translateX(-50%);
+            }
+            /* FIX: Disable fixed background on mobile to prevent zoom/disappearing issues on iOS */
+            .hero-section {
+                background-attachment: scroll;
+            }
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 p-4 bg-white bg-opacity-95 backdrop-blur-md shadow-lg transition-all duration-300">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold tracking-wider text-var(--color-dark)">
+                <span class="text-[var(--color-accent)]">P</span>okala <span class="text-[var(--color-secondary)]">S</span>urya <span class="text-[var(--color-primary)]">A</span>kash
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-gray-700 hover:text-[var(--color-primary)] whitespace-nowrap">About</a>
+                <a href="#athletic" class="nav-link text-gray-700 hover:text-[var(--color-secondary)] whitespace-nowrap">Athletic</a>
+                <a href="#gallery" class="nav-link text-gray-700 hover:text-[var(--color-accent)] whitespace-nowrap">Gallery</a>
+                <a href="#technical" class="nav-link text-gray-700 hover:text-[var(--color-primary)] whitespace-nowrap">Technical</a>
+                <a href="#education" class="nav-link text-gray-700 hover:text-[var(--color-secondary)] whitespace-nowrap">Education</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-[var(--color-primary)] whitespace-nowrap">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white bg-opacity-95 shadow-lg">
+            <a href="#about" class="block text-center py-3 px-4 text-gray-700 hover:bg-gray-100">About</a>
+            <a href="#athletic" class="block text-center py-3 px-4 text-gray-700 hover:bg-gray-100">Athletic</a>
+            <a href="#gallery" class="block text-center py-3 px-4 text-gray-700 hover:bg-gray-100">Gallery</a>
+            <a href="#technical" class="block text-center py-3 px-4 text-gray-700 hover:bg-gray-100">Technical</a>
+            <a href="#education" class="block text-center py-3 px-4 text-gray-700 hover:bg-gray-100">Education</a>
+            <a href="#contact" class="block text-center py-3 px-4 text-gray-700 hover:bg-gray-100">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section - NEW CLEAN DESIGN -->
+    <header id="home" class="hero-section">
+        <div class="hero-overlay max-w-4xl mx-auto px-4 pt-20">
+            
+            <!-- Professional Photo Placeholder -->
+            <img 
+                src="images/profile pic.jpg" 
+                alt="Pokala Surya Akash Professional Headshot"
+                class="w-64 h-64 md:w-72 md:h-72 rounded-full border-4 border-[var(--color-accent)] shadow-2xl mb-6 object-contain bg-gray-800"
+            >
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-2 text-white drop-shadow-lg">
+                POKALA SURYA AKASH
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl font-light tracking-wide drop-shadow-md text-white">
+                International Tennis & Pickleball Athlete <span class="font-semibold text-[var(--color-secondary)]"></span>
+            </p>
+
+            <h2 class="quote-text text-lg md:text-2xl italic font-normal mt-6 text-gray-100 max-w-lg drop-shadow-md">
+                "Winning requires discipline, whether you are solving complex equations or competing for gold."
+            </h2>
+
+            <div class="mt-10 space-x-4 flex justify-center">
+                <a href="#athletic" class="px-6 py-3 bg-[var(--color-secondary)] text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:bg-green-700 hover:shadow-xl">
+                    Athletic Journey
+                </a>
+                <a href="#technical" class="px-6 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:bg-blue-800 hover:shadow-xl">
+                    Technical Profile
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 py-16">
+
+        <!-- About Section (Dual Expertise) -->
+        <section id="about" class="py-16 animate-on-scroll">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">The Dual Pursuit of Excellence</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Pokala Surya Akash is a young professional seamlessly merging the **discipline of an international athlete** with the **innovation of an engineer**. This dedication drives success both on the court and in the lab.
+                </p>
+            </div>
+            
+            <!-- Responsive grid: 1 column on mobile, 3 columns on desktop -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="card p-6 bg-[var(--color-light)] shadow-md">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-[var(--color-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 11h.01M16 16l-4-4-4 4"></path></svg>
+                    <h3 class="text-2xl font-semibold mb-2 text-[var(--color-secondary)]">Discipline & Drive</h3>
+                    <p class="text-gray-700">The unwavering focus and high-pressure performance learned from competing internationally.</p>
+                </div>
+                <div class="card p-6 bg-[var(--color-light)] shadow-md">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-[var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 10h6M9 14h6"></path></svg>
+                    <h3 class="text-2xl font-semibold mb-2 text-[var(--color-primary)]">Logic & Innovation</h3>
+                    <p class="text-gray-700">Applying analytical problem-solving skills to complex Electronics and Communication projects.</p>
+                </div>
+                <div class="card p-6 bg-[var(--color-light)] shadow-md">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <h3 class="text-2xl font-semibold mb-2 text-[var(--color-accent)]">Personal Details</h3>
+                    <ul class="text-gray-700 text-sm space-y-1 mt-3">
+                        <li>DOB: June 20, 2003</li>
+                        <li>Location: Wichita, Kansas</li>
+                        <li>Email: <a href="mailto:pokalasuryaakash2003@gmail.com" class="hover:text-[var(--color-accent)]">pokalasuryaakash2003@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Athletic Achievements Section -->
+        <section 
+            id="athletic" 
+            class="py-16 rounded-xl shadow-inner animate-on-scroll" 
+            style="background-image: linear-gradient(rgba(249, 250, 251, 0.88), rgba(249, 250, 251, 0.88)), url('images/achivements background image.jpg'); background-size: cover; background-position: center; background-attachment: scroll;"
+        >
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4 text-[var(--color-secondary)]">International & National Tennis & Pickleball Highlights</h2>
+                <p class="text-gray-700 max-w-3xl mx-auto">
+                    Years of rigorous training and dedication culminating in significant victories on the global and domestic stage.
+                </p>
+            </div>
+            
+            <!-- Responsive grid: 1 column on mobile, 2 columns on tablet/small desktop, 4 on large desktop -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <!-- Achievement Card 1 (International Silver) -->
+                <div class="card p-6 bg-white shadow-xl border-t-4 border-[var(--color-accent)] text-center">
+                    <span class="text-5xl mb-3 block">🥈</span>
+                    <h3 class="text-xl font-bold mb-2">International Silver Medalist</h3>
+                    <p class="text-gray-600 text-sm">ISTF World Tour, Thailand</p>
+                    <p class="text-[var(--color-secondary)] font-semibold mt-1">July 28, 2023</p>
+                </div>
+
+                <!-- Achievement Card 2 (Thailand Cup) -->
+                <div class="card p-6 bg-white shadow-xl border-t-4 border-[var(--color-accent)] text-center">
+                    <span class="text-5xl mb-3 block">🏆</span>
+                    <h3 class="text-xl font-bold mb-2">National Cup Winner</h3>
+                    <p class="text-gray-600 text-sm">National Soft Tennis Tournament</p>
+                    <p class="text-gray-600 text-sm">About 50 Medal and Achievements</p>
+                    <!-- <p class="text-[var(--color-secondary)] font-semibold mt-1"> 2020</p> -->
+                </div>
+
+                <!-- Achievement Card 3 (AITA Singles) -->
+                <div class="card p-6 bg-white shadow-xl border-t-4 border-[var(--color-accent)] text-center">
+                    <span class="text-5xl mb-3 block">🥇</span>
+                    <h3 class="text-xl font-bold mb-2">AITA Singles Champion</h3>
+                    <p class="text-gray-600 text-sm">All India Tennis Association Tournament</p>
+                    <p class="text-gray-600 text-sm">Won more than 25 Medals & titles</p>
+                    <!-- <p class="text-[var(--color-secondary)] font-semibold mt-1">2023</p> -->
+                </div>
+
+                <!-- Achievement Card 4 (South India) -->
+                <div class="card p-6 bg-white shadow-xl border-t-4 border-[var(--color-accent)] text-center">
+                    <span class="text-5xl mb-3 block">🏅</span>
+                    <h3 class="text-xl font-bold mb-2">South India Championship</h3>
+                    <p class="text-gray-600 text-sm">Regional Tournament Winner</p>
+                    <p class="text-gray-600 text-sm">Won more that 107 Medals & more</p>
+                    <!-- <p class="text-[var(--color-secondary)] font-semibold mt-1">Year 2022</p> -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- NEW Gallery & Certifications Section -->
+        <section id="gallery" class="py-16 animate-on-scroll">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4 text-[var(--color-accent)]">Gallery of Achievements</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto mb-6">
+                    A visual record of victories, press coverage, and formal certifications.
+                </p>
+                <a href="#" target="_blank" class="inline-block px-6 py-3 bg-[var(--color-accent)] text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:bg-yellow-700">
+                    <span class="mr-2">📁</span> View All 50+ Certifications (Google Drive Link)
+                </a>
+                <!-- <p class="text-gray-500 text-sm mt-2">
+                    *Please replace the '#' above with your public Google Drive folder link.*
+                </p> -->
+            </div>
+
+            <!-- Image Grid - Responsive grid: 2 columns on mobile, 3 on tablet, 4 on desktop -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Using guaranteed public URLs for visibility. You must replace these with your actual links. -->
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.20 AM (4).jpeg" alt="Trophy collection">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.20 AM (8).jpeg" alt="Player action shot">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.19 AM (7).jpeg" alt="Medal Ceremony photo">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.20 AM (1).jpeg" alt="Holding trophy on court">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.21 AM (2).jpeg" alt="Newspaper clipping silver medal">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.19 AM.jpeg" alt="Newspaper clipping Guntur Open">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.17 AM.jpeg" alt="League win photo">
+                    </div>
+                </div>
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <img src="images/WhatsApp Image 2025-09-23 at 8.10.17 AM (1).jpeg" alt="General press clipping">
+                    </div>
+                </div>
+                <!-- Video Card 1 -->
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <!-- Replace with your video file -->
+                        <video src="images/WhatsApp Video 2025-09-23 at 8.10.19 AM (1).mp4" controls class="absolute top-0 left-0 w-full h-full object-cover rounded-lg"></video>
+                    </div>
+                </div>
+                <!-- Video Card 2 -->
+                <div class="gallery-cell">
+                    <div class="gallery-image">
+                        <!-- Replace with your video file -->
+                        <video src="images/WhatsApp Video 2025-09-23 at 8.10.19 AM.mp4" controls class="absolute top-0 left-0 w-full h-full object-cover rounded-lg"></video>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- Technical Skills & Projects Section -->
+        <section id="technical" class="py-16 animate-on-scroll">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4 text-[var(--color-primary)]">Technical Expertise & Engineering Projects</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Applying complex problem-solving honed on the court to innovative projects in Electronics and Communication Engineering.
+                </p>
+            </div>
+            
+            <!-- Responsive grid: Skills panel takes full width on mobile/tablet, 1/3 width on desktop -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Skills Panel -->
+                <div class="lg:col-span-1">
+                    <div class="card p-6 bg-[var(--color-primary)] text-white shadow-xl">
+                        <h3 class="text-3xl font-bold mb-4 border-b pb-2 border-white border-opacity-30">Skills Summary</h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-2 text-[var(--color-accent)]">Programming Languages</h4>
+                            <p class="text-lg">C, C++ (OOP), Python</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-2 text-[var(--color-accent)]">Specializations</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-blue-900 px-3 py-1 text-sm rounded-full">VLSI Design & Verification</span>
+                                <span class="bg-blue-900 px-3 py-1 text-sm rounded-full">Machine Learning</span>
+                                <span class="bg-blue-900 px-3 py-1 text-sm rounded-full">Design Patterns</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects List -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h3 class="text-3xl font-bold mb-4 text-[var(--color-primary)]">Key Projects</h3>
+                    
+                    <!-- Project Card 1 -->
+                    <div class="card p-5 bg-[var(--color-light)] shadow-md border-l-4 border-[var(--color-primary)]">
+                        <h4 class="text-2xl font-semibold mb-1">Automatic Door Lock Systems</h4>
+                        <p class="text-gray-700">Designed and implemented a microcontroller-based automated door locking mechanism for enhanced security and convenience.</p>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="card p-5 bg-[var(--color-light)] shadow-md border-l-4 border-[var(--color-primary)]">
+                        <h4 class="text-2xl font-semibold mb-1">RFID Lock System</h4>
+                        <p class="text-gray-700">Developed a robust access control system using RFID technology, focusing on secure authentication protocols.</p>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="card p-5 bg-[var(--color-light)] shadow-md border-l-4 border-[var(--color-primary)]">
+                        <h4 class="text-2xl font-semibold mb-1">Smart Blind Stick</h4>
+                        <p class="text-gray-700">An accessibility project utilizing sensors and microcontrollers to assist visually impaired individuals with navigation and obstacle detection.</p>
+                    </div>
+                    
+                    <!-- Project Card 4 -->
+                    <div class="card p-5 bg-[var(--color-light)] shadow-md border-l-4 border-[var(--color-primary)]">
+                        <h4 class="text-2xl font-semibold mb-1">Automated Renewable Energy System</h4>
+                        <p class="text-gray-700">Project focused on optimizing energy capture and distribution from renewable sources using smart logic.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section 
+            id="education" 
+            class="py-16 rounded-xl shadow-inner animate-on-scroll"
+            style="background-image: linear-gradient(rgba(249, 250, 251, 0.88), rgba(249, 250, 251, 0.88)), url('images/WhatsApp Image 2025-09-23 at 8.10.20 AM (1).jpeg'); background-size: cover; background-position: center; background-attachment: scroll;"
+        >
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4 text-[var(--color-secondary)]">Academic Journey</h2>
+                <p class="text-gray-700 max-w-3xl mx-auto">
+                    Building the foundational knowledge in Electronics and Communication Engineering while maintaining athletic commitments.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-12 relative">
+                <!-- Timeline Line -->
+                <!-- The timeline is designed to stack cleanly on mobile/tablet -->
+                <div class="hidden md:block absolute w-0.5 h-full bg-[var(--color-secondary)] left-1/2 transform -translate-x-1/2 top-0"></div>
+
+                <!-- Item 1: MS -->
+                <div class="flex flex-col md:flex-row justify-between items-start timeline-item">
+                    <div class="md:w-5/12 card p-5 bg-white shadow-lg order-2 md:order-1 relative">
+                        <h3 class="text-2xl font-bold text-[var(--color-primary)]">MS (Master of Science)</h3>
+                        <p class="text-gray-700 font-semibold">Wichita State University (Excercise Science) </p>
+                        <p class="text-gray-500 text-sm">2026 - Present</p>
+                    </div>
+                    <div class="hidden md:block w-2 h-2 bg-[var(--color-accent)] rounded-full absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 order-2 timeline-dot"></div>
+                </div>
+
+                <!-- Item 2: B.Tech -->
+                <div class="flex flex-col md:flex-row justify-between items-start timeline-item">
+                    <div class="md:w-5/12 hidden md:block order-1"></div>
+                    <div class="md:w-5/12 card p-5 bg-white shadow-lg order-2 md:order-3 relative">
+                        <h3 class="text-2xl font-bold text-[var(--color-primary)]">B.Tech (ECE)</h3>
+                        <p class="text-gray-700 font-semibold">KL University, Vijayawada</p>
+                        <p class="text-gray-500 text-sm">2022 - 2025</p>
+                    </div>
+                    <div class="hidden md:block w-2 h-2 bg-[var(--color-accent)] rounded-full absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 order-2 timeline-dot"></div>
+                </div>
+
+                <!-- Item 3: Diploma -->
+                <div class="flex flex-col md:flex-row justify-between items-start timeline-item">
+                    <div class="md:w-5/12 card p-5 bg-white shadow-lg order-2 md:order-1 relative">
+                        <h3 class="text-2xl font-bold text-[var(--color-primary)]">Diploma in ECE</h3>
+                        <p class="text-gray-700 font-semibold">Malineni Perumallu Educational Society</p>
+                        <p class="text-gray-500 text-sm">2019 - 2022 | Achieved 70%</p>
+                    </div>
+                    <div class="hidden md:block w-2 h-2 bg-[var(--color-accent)] rounded-full absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 order-2 timeline-dot"></div>
+                </div>
+
+                <!-- Item 4: 10th -->
+                <div class="flex flex-col md:flex-row justify-between items-start timeline-item">
+                    <div class="md:w-5/12 hidden md:block order-1"></div>
+                    <div class="md:w-5/12 card p-5 bg-white shadow-lg order-2 md:order-3 relative">
+                        <h3 class="text-2xl font-bold text-[var(--color-primary)]">10th Standard</h3>
+                        <p class="text-gray-700 font-semibold">Bhashyam High School, Guntur</p>
+                        <p class="text-gray-500 text-sm">2018 - 2019 | Achieved 8.2 GPA</p>
+                    </div>
+                    <div class="hidden md:block w-2 h-2 bg-[var(--color-accent)] rounded-full absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 order-2 timeline-dot"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 animate-on-scroll">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Connect & Collaborate</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Whether for sponsorship, tennis events, or technical opportunities, I welcome all inquiries.
+                </p>
+            </div>
+            <div class="max-w-xl mx-auto bg-[var(--color-light)] p-8 rounded-xl shadow-lg">
+                <form id="contact-form" class="space-y-4" action="mailto:pokalasuryaakash2003@gmail.com" method="post" enctype="text/plain">
+                    <input type="text" id="name" name="name" placeholder="Your Name" class="contact-input w-full p-3 rounded-lg border border-gray-300 focus:border-[var(--color-primary)]" required>
+                    <input type="email" id="email" name="From" placeholder="Your Email" class="contact-input w-full p-3 rounded-lg border border-gray-300 focus:border-[var(--color-primary)]" required>
+                    <textarea id="message" name="body" rows="5" placeholder="Your Message (Specify Athletic or Technical Inquiry)" class="contact-input w-full p-3 rounded-lg border border-gray-300 focus:border-[var(--color-primary)]" required></textarea>
+                    <button type="submit" class="submit-button w-full px-6 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-lg transition-shadow duration-300 hover:bg-blue-800">
+                        Send Message via Email
+                    </button>
+                </form>
+                <!-- Social Media Links -->
+                <div class="mt-8 text-center space-x-6">
+                    <a href="mailto:pokalasuryaakash2003@gmail.com" class="text-gray-700 hover:text-[var(--color-accent)] transition-colors duration-200" title="Email">
+                        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/surya-akash-6a438b286" target="_blank" class="text-gray-700 hover:text-[var(--color-primary)] transition-colors duration-200" title="LinkedIn Profile">
+                        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764c.966 0 1.75.79 1.75 1.764s-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="#" target="_blank" class="text-gray-700 hover:text-[var(--color-secondary)] transition-colors duration-200" title="Instagram">
+                        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.604 1.258 5.751 2.41a9.96 9.96 0 0 1 2.41 5.75c.058 1.267.07 1.647.07 4.85s-.012 3.584-.07 4.85a9.96 9.96 0 0 1-2.41 5.751c-1.152 1.147-2.502 2.257-5.752 2.409-.12.006-.24.01-.357.01s-.237-.004-.357-.01c-3.25-.152-4.6-1.262-5.75-2.41a9.96 9.96 0 0 1-2.41-5.75c-.058-1.267-.07-1.647-.07-4.85s.012-3.584.07-4.85a9.96 9.96 0 0 1 2.41-5.751c1.15-1.147 2.5-2.257 5.75-2.409.12-.006.24-.01.357-.01zM12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm0 8.5a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6-10a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 bg-[var(--color-dark)] text-white text-sm">
+        &copy; 2025 Pokala Surya Akash. Built with discipline and code.
+    </footer>
+
+    <script>
+        // Function to check if an element is in the viewport
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            // Checking if at least part of the element is visible
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) && 
+                rect.bottom >= 0
+            );
+        }
+
+        // Function to handle scroll animations
+        function handleScrollAnimations() {
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            animatedElements.forEach(el => {
+                // If the element is visible, add the 'in-view' class
+                if (isElementInViewport(el)) {
+                    el.classList.add('in-view');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initial Hero Section Animation (Fade In)
+            const heroOverlay = document.querySelector('.hero-overlay');
+            heroOverlay.classList.add('loaded');
+
+            // 2. Setup Scroll Animations
+            handleScrollAnimations(); // Run once on load to catch elements already in view
+            window.addEventListener('scroll', handleScrollAnimations);
+            window.addEventListener('resize', handleScrollAnimations);
+
+            // 3. Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // 4. Form submission simulation
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                // The form will now open the user's mail client.
+            }
+
+            // 5. Smooth scrolling for all internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
